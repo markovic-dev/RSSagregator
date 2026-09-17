@@ -1,3 +1,5 @@
 .vscode/
 rssagg
+rssagg.exe
+*.exe
 .env
