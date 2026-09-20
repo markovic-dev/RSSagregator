@@ -7,7 +7,7 @@
   </p>
 
   <p>
-    Snažan backend servis sa automatskim pozadinskim scraper-om u realnom vremenu, izgrađen po modernim Go standardima i arhitekturi.
+    A robust backend service featuring a real-time concurrent background scraper, built using modern Go architecture and best practices.
   </p>
 
   <br />
@@ -30,94 +30,94 @@
 
 ---
 
-## 🚀 O Projektu
+## 🚀 Overview
 
-Ovaj projekt predstavlja kompletan backend sustav za agregaciju i obradu RSS izvora vijesti. Sustav pokreće konurentni pozadinski radnik (*background worker*) koji u definiranima vremenskim intervalima paralelno preuzima, parsira XML strukture i skladišti najnovije članke u bazu podataka.
+This project is a full-featured backend system for RSS feed aggregation and data processing. It runs a concurrent background worker that periodically fetches, parses XML structures, and stores the latest articles in a PostgreSQL database in parallel.
 
-### ✨ Ključne Mogućnosti
+### ✨ Key Features
 
-- ⚡ **Ultra-brzi REST API:** Rutiranje zasnovano na laganom i brzom `go-chi/chi` ruteru.
-- 🔐 **Custom Auth Middleware:** Sigurna autentifikacija korisnika putem jedinstvenih API ključeva (`Authorization: ApiKey <KEY>`).
-- 🔄 **Concurrent Scraper Engine:** Pozadinski radnik koji koristi Go gorutine (`goroutines`) i `sync.WaitGroup` za bezbedno i paralelno preuzimanje više RSS feed-ova odjednom.
-- 🗄️ **Type-Safe SQL Queries:** Korištenje `sqlc` generatora koji pretvara čiste SQL upite u 100% type-safe Go kod.
-- 🛠️ **Database Migrations:** Upravljanje šemom baze podataka pomoću `goose` alata.
-- 🔗 **Many-to-Many Relacije:** Napredno praćenje i otpraćivanje feed-ova po korisniku.
+- ⚡ **Ultra-Fast REST API:** Powered by the lightweight and fast `go-chi/chi` router.
+- 🔐 **Custom Auth Middleware:** Secure user authentication using custom API keys (`Authorization: ApiKey <KEY>`).
+- 🔄 **Concurrent Scraper Engine:** Background worker utilizing Go `goroutines` and `sync.WaitGroup` to safely fetch multiple RSS feeds in parallel.
+- 🗄️ **Type-Safe SQL Queries:** Uses `sqlc` to generate 100% type-safe Go code directly from raw SQL queries.
+- 🛠️ **Database Migrations:** Database schema management using `goose`.
+- 🔗 **Many-to-Many Relationships:** Robust feed following/unfollowing logic per user.
 
 ---
 
-## 🛠️ Tehnološki Stog
+## 🛠️ Tech Stack
 
-* **Jezik:** [Go (Golang)](https://golang.org/)
-* **Baza Podataka:** [PostgreSQL](https://www.postgresql.org/)
+* **Language:** [Go (Golang)](https://golang.org/)
+* **Database:** [PostgreSQL](https://www.postgresql.org/)
 * **Router:** [go-chi/chi](https://github.com/go-chi/chi)
 * **SQL Generator:** [sqlc](https://sqlc.dev/)
-* **Migracije:** [goose](https://github.com/pressly/goose)
+* **Migrations:** [goose](https://github.com/pressly/goose)
 * **UUID:** `github.com/google/uuid`
 
 ---
 
 ## 📡 API Endpoints Overview
 
-| Metoda | Endpoint | Auth | Opis |
+| Method | Endpoint | Auth | Description |
 | :---: | :--- | :---: | :--- |
-| `POST` | `/v1/users` | ❌ | Registracija novog korisnika i generiranje API ključa |
-| `GET` | `/v1/users` | 🔑 | Dohvaćanje profila trenutno autentificiranog korisnika |
-| `POST` | `/v1/feeds` | 🔑 | Kreiranje novog RSS feed-a u sustavu |
-| `GET` | `/v1/feeds` | ❌ | Pregled svih registriranih RSS feed-ova |
-| `POST` | `/v1/feed_follows` | 🔑 | Zapraćivanje određenog RSS feed-a po `feed_id` |
-| `GET` | `/v1/feed_follows` | 🔑 | Izlistavanje svih feed-ova koje korisnik prati |
-| `DELETE` | `/v1/feed_follows/{feedFollowID}` | 🔑 | Otpraćivanje feed-a na temelju ID-a zapraćivanja |
-| `GET` | `/v1/posts` | 🔑 | Preuzimanje najnovijih obrađenih članaka za zapraćene feed-ove |
+| `POST` | `/v1/users` | ❌ | Create a new user and generate an API key |
+| `GET` | `/v1/users` | 🔑 | Fetch current authenticated user's profile |
+| `POST` | `/v1/feeds` | 🔑 | Create a new RSS feed |
+| `GET` | `/v1/feeds` | ❌ | Get all registered RSS feeds |
+| `POST` | `/v1/feed_follows` | 🔑 | Follow a specific RSS feed by `feed_id` |
+| `GET` | `/v1/feed_follows` | 🔑 | List all RSS feeds followed by the user |
+| `DELETE` | `/v1/feed_follows/{feedFollowID}` | 🔑 | Unfollow an RSS feed by follow record ID |
+| `GET` | `/v1/posts` | 🔑 | Retrieve latest parsed articles from followed feeds |
 
 ---
 
-## 💻 Brzo Pokretanje (Quick Start)
+## 💻 Quick Start
 
-### 1. Preduvjeti
-Uverite se da imate instalirano sljedeće na vašem sustavu:
+### 1. Prerequisites
+Make sure you have the following installed on your system:
 - [Go (v1.20+)](https://golang.org/doc/install)
 - [PostgreSQL](https://www.postgresql.org/download/)
-- [goose CLI](https://github.com/pressly/goose) (za pokretanje migracija)
+- [goose CLI](https://github.com/pressly/goose) (for database migrations)
 
-### 2. Kloniranje Repozitorijuma
+### 2. Clone the Repository
 ```bash
-git clone [https://github.com/TVOJE_USERNAME/rssagg.git](https://github.com/TVOJE_USERNAME/rssagg.git)
+git clone [https://github.com/YOUR_USERNAME/rssagg.git](https://github.com/YOUR_USERNAME/rssagg.git)
 cd rssagg
 ```
 
-### 3. Konfiguracija Okruženja (`.env`)
-Kreirajte `.env` datoteku u korijenu projekta (možete kopirati iz `.env.example`):
+### 3. Environment Configuration (`.env`)
+Create a `.env` file in the root directory (you can copy `.env.example`):
 ```env
 PORT=8080
 DB_URL=postgres://postgres:postgres@localhost:5432/rssagg?sslmode=disable
 ```
 
-### 4. Pokretanje Baznih Migracija
+### 4. Run Database Migrations
 ```bash
 cd sql/schema
 goose postgres "postgres://postgres:postgres@localhost:5432/rssagg?sslmode=disable" up
 cd ../..
 ```
 
-### 5. Pokretanje Aplikacije
+### 5. Run the Application
 ```bash
 go run .
 ```
 
-Server će se pokrenuti na `http://localhost:8080` zajedno sa pozadinskim scraper radnikom! 🚀
+The server will start at `http://localhost:8080` along with the background scraper worker! 🚀
 
 ---
 
-## 🧪 Testiranje putem HTTP Klijenta
+## 🧪 Authentication & Testing
 
-Prilikom slanja zahtjeva na zaštićene rute, obavezno proslijedite `Authorization` zaglavlje:
+When sending requests to protected routes, make sure to include the `Authorization` header:
 
 ```http
-Authorization: ApiKey VAŠ_API_KLJUČ_HERE
+Authorization: ApiKey YOUR_API_KEY_HERE
 ```
 
 ---
 
 <div align="center">
-  <sub>Izgrađeno sa ❤️ i Go jezikom.</sub>
+  <sub>Built with ❤️ and Go.</sub>
 </div>
